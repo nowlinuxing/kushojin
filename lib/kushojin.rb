@@ -5,6 +5,7 @@ require "kushojin/model_methods"
 require "kushojin/recorder"
 require "kushojin/model_methods"
 require "kushojin/sender"
+require "kushojin/controller_methods" if defined?(AbstractController)
 
 module Kushojin
 end
