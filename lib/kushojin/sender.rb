@@ -1,0 +1,2 @@
+require "kushojin/sender/base"
+require "kushojin/sender/each_sender"

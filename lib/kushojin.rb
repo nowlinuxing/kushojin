@@ -3,6 +3,7 @@ require "kushojin/version"
 require "kushojin/model_methods"
 require "kushojin/recorder"
 require "kushojin/model_methods"
+require "kushojin/sender"
 
 module Kushojin
 end
