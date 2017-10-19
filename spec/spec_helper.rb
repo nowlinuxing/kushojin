@@ -27,4 +27,5 @@ ActiveRecord::Schema.define do
 end
 
 class User < ActiveRecord::Base
+  record_changes
 end
