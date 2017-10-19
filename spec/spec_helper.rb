@@ -14,3 +14,17 @@ RSpec.configure do |config|
     c.syntax = :expect
   end
 end
+
+ActiveRecord::Schema.define do
+  self.verbose = false
+
+  create_table :users, force: true do |t|
+    t.string  :name
+    t.integer :age
+
+    t.timestamps
+  end
+end
+
+class User < ActiveRecord::Base
+end

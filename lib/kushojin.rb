@@ -1,5 +1,5 @@
 require "kushojin/version"
+require "kushojin/model_methods"
 
 module Kushojin
-  # Your code goes here...
 end
