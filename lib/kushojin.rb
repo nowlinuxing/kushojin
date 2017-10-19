@@ -1,5 +1,6 @@
 require "active_record"
 require "kushojin/version"
+require "kushojin/config"
 require "kushojin/model_methods"
 require "kushojin/recorder"
 require "kushojin/model_methods"
