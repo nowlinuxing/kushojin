@@ -1,8 +1,6 @@
 # Kushojin
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/kushojin`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+Kushojin aims to record changed attributes of ActiveRecord model.
 
 ## Installation
 
@@ -22,7 +20,24 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+```ruby
+Kushojin::Config.logger = Fluent::Logger::FluentLogger.new(nil, host: "localhost", port: 24224)
+
+class User < ApplicationRecord
+  record_changes
+end
+
+class UsersController < ApplicationController
+  send_changes
+
+  def create
+    User.create(params[:user])
+  end
+end
+```
+
+    $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
+    # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
 
 ## Development
 
@@ -32,7 +47,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/kushojin.
+Bug reports and pull requests are welcome on GitHub at https://github.com/nowlinuxing/kushojin.
 
 
 ## License
