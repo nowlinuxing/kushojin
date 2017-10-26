@@ -1,4 +1,4 @@
-# Kushojin
+# Kushojin [![Build Status](https://travis-ci.org/nowlinuxing/kushojin.svg?branch=master)](https://travis-ci.org/nowlinuxing/kushojin.svg?branch=master)
 
 Kushojin aims to record changed attributes of ActiveRecord model.
 
