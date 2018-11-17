@@ -53,6 +53,36 @@ end
     $ curl -X PATCH -d "user[age]=21" http://localhost:3000/users/1
     # no output
 
+Custom callback object can be used with `:callbacks` option.
+
+```ruby
+class CustomCallbacks
+  # Must respond to after_create, after_update, and before_destroy.
+  def after_create(record); end
+  def after_update(record); end
+  def before_destroy(record); end
+end
+
+class User < ApplicationRecord
+  record_changes callbacks: CustomCallbacks.new
+end
+```
+
+### Override
+
+You can override options of Recording changes in subclass.
+
+```ruby
+class ApplicationRecord < ActiveRecord::Base
+  self.abstract_class = true
+  record_changes
+end
+
+class User < ApplicationRecord
+  record_changes only: [:create, :destroy]
+end
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
