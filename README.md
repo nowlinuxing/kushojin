@@ -39,6 +39,20 @@ end
     $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
     # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
 
+Changes is recorded when the model is created, updated and destroyed.
+The `:only` option can be used same as filters of controller.
+
+```ruby
+class User < ApplicationRecord
+  record_changes only: [:create, :destroy]
+end
+```
+    $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
+    # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
+
+    $ curl -X PATCH -d "user[age]=21" http://localhost:3000/users/1
+    # no output
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

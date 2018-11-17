@@ -5,8 +5,6 @@ RSpec.describe Kushojin::ModelMethods::RecordChangesCallbacks do
     let(:model) do
       Class.new(ActiveRecord::Base) do
         self.table_name = "users".freeze
-
-        record_changes
       end
     end
 
@@ -38,6 +36,10 @@ RSpec.describe Kushojin::ModelMethods::RecordChangesCallbacks do
       it { expect(recorded_change.event).to eq(event) }
     end
 
+    shared_examples "record no change" do |event|
+      it { expect { change_record }.not_to change(Kushojin::Recorder.changes, :size) }
+    end
+
     after do
       model.delete_all
       Kushojin::Recorder.destroy
@@ -48,19 +50,46 @@ RSpec.describe Kushojin::ModelMethods::RecordChangesCallbacks do
       Kushojin::Recorder.changes.last
     end
 
-    context "when create a record" do
-      include_context "create a record"
-      include_examples "record a change", :create
+    context "when record_changes has no option" do
+      before do
+        model.record_changes
+      end
+
+      context "and create a record" do
+        include_context "create a record"
+        include_examples "record a change", :create
+      end
+
+      context "and update attributes" do
+        include_context "update a record"
+        include_examples "record a change", :update
+      end
+
+      context "and delete a record" do
+        include_context "destroy a record"
+        include_examples "record a change", :destroy
+      end
     end
 
-    context "when update attributes" do
-      include_context "update a record"
-      include_examples "record a change", :update
-    end
+    context "when record_changes has only option" do
+      before do
+        model.record_changes only: [:create, :destroy]
+      end
 
-    context "when delete a record" do
-      include_context "destroy a record"
-      include_examples "record a change", :destroy
+      context "and create a record" do
+        include_context "create a record"
+        include_examples "record a change", :create
+      end
+
+      context "and update attributes" do
+        include_context "update a record"
+        include_examples "record no change", :update
+      end
+
+      context "and delete a record" do
+        include_context "destroy a record"
+        include_examples "record a change", :destroy
+      end
     end
   end
 end
