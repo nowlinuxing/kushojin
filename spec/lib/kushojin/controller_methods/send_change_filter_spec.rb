@@ -26,6 +26,10 @@ RSpec.describe Kushojin::ControllerMethods::SendChangeFilter do
       end
     end
 
+    after do
+      User.delete_all
+    end
+
     it "should record a create log" do
       expect(logger.queue[0].tag).to eq("users.action")
       expect(logger.queue[0]).to match(
