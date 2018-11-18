@@ -3,7 +3,6 @@ require "spec_helper"
 RSpec.describe Kushojin::Sender::EachSender do
   describe "#send" do
     let(:logger) { Fluent::Logger::TestLogger.new }
-    let(:controller) { double(:UsersController) }
 
     let(:user) { User.create(name: "bill", age: 20) }
     let(:changes) do
@@ -17,6 +16,7 @@ RSpec.describe Kushojin::Sender::EachSender do
     end
 
     before do
+      controller = double(:UsersController)
       req = double("ActionDispatch::Request")
 
       allow(controller).to receive_messages(
@@ -25,19 +25,16 @@ RSpec.describe Kushojin::Sender::EachSender do
         request:         req,
       )
       allow(req).to receive(:request_id).and_return("12345678-9abc-def0-1234-56789abcdef0")
+
+      sender = Kushojin::Sender::EachSender.new(logger)
+      sender.send(changes, controller: controller)
     end
 
     after do
       User.delete_all
     end
 
-    subject do
-      sender = Kushojin::Sender::EachSender.new(logger)
-      sender.send(changes, controller: controller)
-    end
-
-    it do
-      subject
+    it "should send a create log" do
       expect(logger.queue[0].tag).to eq("users.action")
       expect(logger.queue[0]).to match(
         "event"      => "create",
@@ -49,7 +46,9 @@ RSpec.describe Kushojin::Sender::EachSender do
           "age"  => [nil, 20],
         },
       )
+    end
 
+    it "should send a update log" do
       expect(logger.queue[1].tag).to eq("users.action")
       expect(logger.queue[1]).to match(
         "event"      => "update",
