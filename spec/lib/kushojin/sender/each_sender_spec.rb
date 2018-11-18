@@ -2,7 +2,7 @@ require "spec_helper"
 
 RSpec.describe Kushojin::Sender::EachSender do
   describe "#send" do
-    let(:logger) { spy("Fluent::Logger::TestLogger") }
+    let(:logger) { Fluent::Logger::TestLogger.new }
     let(:controller) { double(:UsersController) }
 
     let(:user) { User.create(name: "bill", age: 20) }
@@ -38,12 +38,8 @@ RSpec.describe Kushojin::Sender::EachSender do
 
     it do
       subject
-      expect(logger).to have_received(:post).twice
-    end
-
-    it do
-      subject
-      map1 = {
+      expect(logger.queue[0].tag).to eq("users.action")
+      expect(logger.queue[0]).to match(
         "event"      => "create",
         "request_id" => "12345678-9abc-def0-1234-56789abcdef0",
         "table_name" => "users",
@@ -52,10 +48,10 @@ RSpec.describe Kushojin::Sender::EachSender do
           "name" => [nil, "bill"],
           "age"  => [nil, 20],
         },
-      }
-      expect(logger).to have_received(:post).with("users.action", map1).ordered
+      )
 
-      map2 = {
+      expect(logger.queue[1].tag).to eq("users.action")
+      expect(logger.queue[1]).to match(
         "event"      => "update",
         "request_id" => "12345678-9abc-def0-1234-56789abcdef0",
         "table_name" => "users",
@@ -64,8 +60,7 @@ RSpec.describe Kushojin::Sender::EachSender do
           "name" => ["bill", "bob"], # rubocop:disable Style/WordArray
           "age"  => [20, 21],
         },
-      }
-      expect(logger).to have_received(:post).with("users.action", map2).ordered
+      )
     end
   end
 end
