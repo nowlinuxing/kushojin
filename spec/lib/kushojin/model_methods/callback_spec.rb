@@ -37,7 +37,7 @@ RSpec.describe Kushojin::ModelMethods::Callback do
         it { expect(recorded_change.event).to eq(event) }
       end
 
-      shared_examples "record no change" do |event|
+      shared_examples "record no change" do
         it { expect { change_record }.not_to change(Kushojin::Recorder.changes, :size) }
       end
 
