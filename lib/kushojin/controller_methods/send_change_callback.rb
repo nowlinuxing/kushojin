@@ -1,6 +1,6 @@
 module Kushojin
   module ControllerMethods
-    class SendChangeFilter
+    class SendChangeCallback
       def initialize(sender: nil)
         @sender = sender || Config.sender
       end

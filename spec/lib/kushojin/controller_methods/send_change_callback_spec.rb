@@ -1,12 +1,12 @@
 require "spec_helper"
-require "kushojin/controller_methods/send_change_filter"
+require "kushojin/controller_methods/send_change_callback"
 
-RSpec.describe Kushojin::ControllerMethods::SendChangeFilter do
+RSpec.describe Kushojin::ControllerMethods::SendChangeCallback do
   describe "#around" do
     let(:logger) { Fluent::Logger::TestLogger.new }
     let(:callback) do
       sender = Kushojin::Sender::EachSender.new(logger)
-      Kushojin::ControllerMethods::SendChangeFilter.new(sender: sender)
+      Kushojin::ControllerMethods::SendChangeCallback.new(sender: sender)
     end
 
     before do

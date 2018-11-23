@@ -1,4 +1,4 @@
-require "kushojin/controller_methods/filter"
-require "kushojin/controller_methods/send_change_filter"
+require "kushojin/controller_methods/callback"
+require "kushojin/controller_methods/send_change_callback"
 
-ActionController::Metal.extend Kushojin::ControllerMethods::Filter
+ActionController::Metal.extend Kushojin::ControllerMethods::Callback
