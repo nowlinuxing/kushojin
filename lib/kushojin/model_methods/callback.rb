@@ -1,7 +1,7 @@
 module Kushojin
   module ModelMethods
     module Callback
-      RECORD_EVENTS = %i[before_destroy after_create after_update].freeze
+      RECORD_EVENTS = %i[after_create after_update after_destroy].freeze
 
       module ClassMethods
         def self.extended(klass)
@@ -22,10 +22,10 @@ module Kushojin
         # Custom callback object can be used with +:callbacks+ option.
         #
         #   class CustomCallbacks
-        #     # Must respond to after_create, after_update, and before_destroy.
+        #     # Must respond to after_create, after_update, and after_destroy.
         #     def after_create(record); end
         #     def after_update(record); end
-        #     def before_destroy(record); end
+        #     def after_destroy(record); end
         #   end
         #
         #   class User < ApplicationRecord

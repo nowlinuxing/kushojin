@@ -46,13 +46,13 @@ RSpec.describe Kushojin::ModelMethods::RecordChangesCallbacks do
     end
   end
 
-  describe "#before_destroy" do
+  describe "#after_destroy" do
     let(:record) do
       r = model.create(name: "bill", age: 20)
       r.destroy
     end
 
-    subject { callbacks.before_destroy(record) }
+    subject { callbacks.after_destroy(record) }
 
     it "should record a Change of destroy" do
       expect { subject }.to change(Kushojin::Recorder.changes, :size).by(1)
