@@ -1,6 +1,6 @@
 require "spec_helper"
 
-RSpec.describe Kushojin::ModelMethods::RecordChangesCallbacks do
+RSpec.describe Kushojin::ModelMethods::Callback do
   describe ".record_changes" do
     context "with :only option" do
       let(:model) do
