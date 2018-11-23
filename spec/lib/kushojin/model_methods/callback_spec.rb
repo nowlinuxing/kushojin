@@ -74,7 +74,7 @@ RSpec.describe Kushojin::ModelMethods::Callback do
 
       context "when record_changes has only option" do
         before do
-          model.record_changes only: [:create, :destroy]
+          model.record_changes only: %i[create destroy]
         end
 
         context "and create a record" do
