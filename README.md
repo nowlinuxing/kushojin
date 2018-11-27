@@ -57,10 +57,10 @@ Custom callback object can be used with `:callbacks` option.
 
 ```ruby
 class CustomCallbacks
-  # Must respond to after_create, after_update, and before_destroy.
+  # Must respond to after_create, after_update, and after_destroy.
   def after_create(record); end
   def after_update(record); end
-  def before_destroy(record); end
+  def after_destroy(record); end
 end
 
 class User < ApplicationRecord
