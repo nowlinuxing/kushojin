@@ -22,8 +22,8 @@ module Kushojin
       @changes = []
     end
 
-    def record(event, model)
-      @changes << ModelMethods::Change.new(event, model)
+    def record(change)
+      @changes << change
     end
   end
 end
