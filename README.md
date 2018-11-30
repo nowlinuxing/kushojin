@@ -39,6 +39,21 @@ end
     $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
     # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
 
+You can pass in a class or an instance to change behaviors of the callbacks.
+
+```ruby
+class CustomCallbacks
+  # Must be able to respond to after_create, after_update, and after_destroy.
+  def after_create(record); end
+  def after_update(record); end
+  def after_destroy(record); end
+end
+
+class User < ApplicationRecord
+  record_changes CustomCallbacks.new
+end
+```
+
 Changes is recorded when the model is created, updated and destroyed.
 The `:only` option can be used same as filters of controller.
 
@@ -53,20 +68,6 @@ end
     $ curl -X PATCH -d "user[age]=21" http://localhost:3000/users/1
     # no output
 
-Custom callback object can be used with `:callbacks` option.
-
-```ruby
-class CustomCallbacks
-  # Must respond to after_create, after_update, and after_destroy.
-  def after_create(record); end
-  def after_update(record); end
-  def after_destroy(record); end
-end
-
-class User < ApplicationRecord
-  record_changes callbacks: CustomCallbacks.new
-end
-```
 
 ### Override
 

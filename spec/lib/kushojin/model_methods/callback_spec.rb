@@ -109,8 +109,8 @@ RSpec.describe Kushojin::ModelMethods::Callback do
       let(:callbacks_for_subclass) { instance_double("RecordChangesCallbacks") }
 
       before do
-        superclass.record_changes callbacks: callbacks_for_superclass
-        subclass.record_changes callbacks: callbacks_for_subclass
+        superclass.record_changes callbacks_for_superclass
+        subclass.record_changes callbacks_for_subclass
       end
 
       after do
