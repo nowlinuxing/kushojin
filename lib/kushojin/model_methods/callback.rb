@@ -14,42 +14,30 @@ module Kushojin
         #     record_changes
         #   end
         #
-        # Changes is recorded when the model is created, updated and destroyed.
-        # The +:only+ option can be used same as filters of controller.
-        #
-        #   record_changes only: [:create, :destroy]
-        #
-        # Custom callback object can be used with +:callbacks+ option.
+        # You can pass in a class or an instance to change behaviors of the callbacks.
         #
         #   class CustomCallbacks
-        #     # Must respond to after_create, after_update, and after_destroy.
+        #     # Must be able to respond to after_create, after_update, and after_destroy.
         #     def after_create(record); end
         #     def after_update(record); end
         #     def after_destroy(record); end
         #   end
         #
         #   class User < ApplicationRecord
-        #     record_changes callbacks: CustomCallbacks.new
+        #     record_changes CustomCallbacks.new
         #   end
         #
-        # Both +:only+ and +:callbacks+ option can be overrided by subclass.
+        # Changes is recorded when the model is created, updated and destroyed.
+        # The +:only+ option can be used same as filters of controller.
         #
-        #   class ApplicationRecord < ActiveRecord::Base
-        #     self.abstract_class = true
-        #     record_changes
-        #   end
-        #
-        #   class User < ApplicationRecord
-        #     record_changes only: [:create, :destroy], callbacks: CustomCallbacks.new
-        #   end
+        #   record_changes only: [:create, :destroy]
         #
         # ===== Options
         #
         # * <tt>only</tt> - Records only for this event.
         #   Support event is +:create+, +:update+, and +:destroy+.
-        # * <tt>callbacks</tt> - Use callback object instead of RecordChangesCallbacks.
         #
-        def record_changes(only: [], callbacks: nil)
+        def record_changes(callbacks = nil, only: [])
           if kushojin_callbacks
             remove_callbacks
             self.kushojin_callbacks = callbacks if callbacks
