@@ -8,7 +8,7 @@ module Kushojin
 
       def send(changes, controller:)
         changes.each do |change|
-          @logger.post(tag(controller), @serializer.serialize(change, controller: controller))
+          @logger.post(tag(controller), serialize(change, controller))
         end
       end
 
@@ -16,6 +16,10 @@ module Kushojin
 
       def tag(controller)
         "#{controller.controller_name}.#{controller.action_name}"
+      end
+
+      def serialize(change, controller)
+        @serializer.serialize(change, controller: controller)
       end
     end
   end
