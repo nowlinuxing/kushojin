@@ -20,7 +20,7 @@ module Kushojin
       end
 
       def serialize(change, controller)
-        @serializer.serialize(change, controller: controller)
+        @serializer.serialize(change).merge!("request_id" => controller.request.request_id)
       end
     end
   end
