@@ -8,13 +8,13 @@ module Kushojin
 
       def send(changes, controller:)
         changes.each do |change|
-          @logger.post(tag(controller), serialize(change, controller))
+          @logger.post(generate_tag(controller), serialize(change, controller))
         end
       end
 
       private
 
-      def tag(controller)
+      def generate_tag(controller)
         "#{controller.controller_name}.#{controller.action_name}"
       end
 
