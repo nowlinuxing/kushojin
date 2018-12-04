@@ -1,7 +1,7 @@
 module Kushojin
   module Sender
     class EachSender < Base
-      def initialize(logger, serializer: Serializer::SimpleSerializer)
+      def initialize(logger = nil, serializer: Serializer::SimpleSerializer)
         super
         @serializer = serializer
       end
