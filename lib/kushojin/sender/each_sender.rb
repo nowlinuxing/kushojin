@@ -7,8 +7,9 @@ module Kushojin
       end
 
       def send(changes, controller:)
+        tag = generate_tag(controller)
         changes.each do |change|
-          @logger.post(generate_tag(controller), serialize(change, controller))
+          @logger.post(tag, serialize(change, controller))
         end
       end
 
