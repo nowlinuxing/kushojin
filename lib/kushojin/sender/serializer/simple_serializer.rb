@@ -2,10 +2,9 @@ module Kushojin
   module Sender
     module Serializer
       class SimpleSerializer < Base
-        def self.serialize(change, controller:)
+        def self.serialize(change)
           {
             "event"            => change.event.to_s,
-            "request_id"       => controller.request.request_id,
             "table_name"       => change.table_name,
             change.primary_key => change.model.id,
             "changes"          => changes_hash(change),

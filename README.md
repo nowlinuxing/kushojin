@@ -41,6 +41,58 @@ end
     $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
     # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
 
+Changes is recorded when the model is created, updated and destroyed.
+The `:only` option can be used same as filters of controller.
+
+```ruby
+class User < ApplicationRecord
+  record_changes only: [:create, :destroy]
+end
+```
+    $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
+    # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
+
+    $ curl -X PATCH -d "user[age]=21" http://localhost:3000/users/1
+    # no output
+
+### Customize sending fields of changes
+
+Kushojin sends model changes with some information:
+
+- tag: Controller name and action name concatenated with a period.
+- event: The event which model is changed on.
+- table_name: Table name of the model.
+- primary key: Primary key name and value.
+- changes: Model changes without its primary key, `created_at`, and `updated_at`. It contains pairs of attribute name and before/after values.
+- request_id: Request ID.
+
+It is able to pass a customized sender to add additional information.
+
+```ruby
+class CustomSender < Kushojin::Sender::EachSender
+  private
+
+  # Add "user_id"
+  def serialize(change, controller)
+    super.merge!("user_id" => controller.current_user.id)
+  end
+end
+
+class MessagesController < ApplicationController
+  send_changes Kushojin::ControllerMethods::SendChangeCallback.new(sender: CustomSender.new)
+
+  def current_user
+    return_user_record_with_any_authentication_logic
+  end
+
+  def create
+    Message.create(params[:message])
+  end
+end
+```
+
+### Customize callbacks of model
+
 You can pass in a class or an instance to change behaviors of the callbacks.
 
 ```ruby
@@ -55,20 +107,6 @@ class User < ApplicationRecord
   record_changes CustomCallbacks.new
 end
 ```
-
-Changes is recorded when the model is created, updated and destroyed.
-The `:only` option can be used same as filters of controller.
-
-```ruby
-class User < ApplicationRecord
-  record_changes only: [:create, :destroy]
-end
-```
-    $ curl -X POST -d "user[name]=bill&user[age]=20" http://localhost:3000/users
-    # output: users.create {"event":"create","request_id":"4afd0731-dd25-4668-b769-2017dbdd3642","table_name":"users","id":1,"changes":{"name":[null,"bill"],"age":[null,20]}}
-
-    $ curl -X PATCH -d "user[age]=21" http://localhost:3000/users/1
-    # no output
 
 
 ### Override
