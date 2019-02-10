@@ -2,4 +2,7 @@ sudo: false
 language: ruby
 rvm:
   - 2.5.3
+gemfile:
+  - gemfiles/rails_5.1.gemfile
+  - gemfiles/rails_5.2.gemfile
 before_install: gem install bundler -v 1.17.1
