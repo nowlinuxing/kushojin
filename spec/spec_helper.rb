@@ -1,7 +1,13 @@
 require "bundler/setup"
 require "active_record"
-require "kushojin"
 require "pry-byebug"
+
+if ENV["COVERAGE"]
+  require 'simplecov'
+  SimpleCov.start
+end
+
+require "kushojin"
 
 ActiveRecord::Base.establish_connection adapter: "sqlite3", database: ":memory:"
 # ActiveRecord::Base.logger = ::Logger.new(STDOUT)
