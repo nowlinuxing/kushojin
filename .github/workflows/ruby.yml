@@ -45,4 +45,4 @@ jobs:
         env:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
-          ./cc-test-reporter after-build
+          GIT_BRANCH=$(echo $GITHUB_REF | sed -e 's|.*/||') ./cc-test-reporter after-build
