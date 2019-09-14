@@ -1,4 +1,8 @@
-# Kushojin [![Build Status](https://travis-ci.org/nowlinuxing/kushojin.svg?branch=master)](https://travis-ci.org/nowlinuxing/kushojin.svg?branch=master) [![Maintainability](https://api.codeclimate.com/v1/badges/33c293ed9b4f9f25ab2c/maintainability)](https://codeclimate.com/github/nowlinuxing/kushojin/maintainability)
+# Kushojin
+
+[![Build Status](https://travis-ci.org/nowlinuxing/kushojin.svg?branch=master)](https://travis-ci.org/nowlinuxing/kushojin.svg?branch=master)
+[![Maintainability](https://api.codeclimate.com/v1/badges/33c293ed9b4f9f25ab2c/maintainability)](https://codeclimate.com/github/nowlinuxing/kushojin/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/33c293ed9b4f9f25ab2c/test_coverage)](https://codeclimate.com/github/nowlinuxing/kushojin/test_coverage)
 
 Kushojin gathers changes to the attributes of the ActiveRecord model and sends them externally via Fluentd.
 This is useful for logging, tracking and real-time aggregation of accesses involving database updates.
