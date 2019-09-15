@@ -1,5 +1,6 @@
 # Kushojin
 
+[![Gem Version](https://badge.fury.io/rb/kushojin.svg)](https://badge.fury.io/rb/kushojin)
 [![CI](https://github.com/nowlinuxing/kushojin/workflows/CI/badge.svg)](https://github.com/nowlinuxing/kushojin/actions)
 [![Maintainability](https://api.codeclimate.com/v1/badges/33c293ed9b4f9f25ab2c/maintainability)](https://codeclimate.com/github/nowlinuxing/kushojin/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/33c293ed9b4f9f25ab2c/test_coverage)](https://codeclimate.com/github/nowlinuxing/kushojin/test_coverage)
