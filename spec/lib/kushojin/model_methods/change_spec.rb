@@ -66,7 +66,12 @@ RSpec.describe Kushojin::ModelMethods::Change do
 
       it { expect(subject.event).to eq(:touch) }
       it_behaves_like "keeping a duplicated model"
-      it { expect(subject.changes).to match({}) }
+
+      if ActiveRecord.version >= Gem::Version.new("6.0.0")
+        it { expect(subject.changes).to match("updated_at" => [an_instance_of(Time), model.updated_at]) }
+      else
+        it { expect(subject.changes).to match({}) }
+      end
     end
 
     context "when the record is created" do

@@ -10,6 +10,27 @@ module Kushojin
         @model = take_copy_of(model).freeze
       end
 
+      # Returns changes of the ActiveRecord model.
+      #
+      #   class User < ApplicationRecord
+      #   end
+      #
+      #   user = User.create(name: "bill")
+      #   Kushojin::ModelMethods::Change.new(:create, user).changes # => { "id" => [nil, 123], "name" => [nil, "bill"], "created_at" => [nil, 2019-01-23 00:00:00 UTC], "updated_at" => [nil, 2019-12-31 12:34:56 UTC]
+      #   #   }
+      #
+      # If a model is updated by +touch+ method, this returns the changed
+      # attributes when activerecord is 6.0.0 or later.
+      #
+      #   # activerecord 5.x
+      #   user.touch
+      #   Kushojin::ModelMethods::Change.new(:touch, user).changes # => {}
+      #
+      #   # activerecord 6.x
+      #   user.touch
+      #   Kushojin::ModelMethods::Change.new(:touch, user).changes # => { "updated_at" => [2019-09-16 15:25:43 UTC, 2019-09-16 16:33:48 UTC] }
+      #
+      # See https://github.com/rails/rails/issues/33429
       def changes
         @model.saved_changes
       end
