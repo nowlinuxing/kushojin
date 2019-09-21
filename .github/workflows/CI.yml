@@ -33,14 +33,15 @@ jobs:
           ./cc-test-reporter before-build
 
       - name: Build and test with Rake
+        env:
+          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
+          COVERAGE: true
         run: |
           sudo apt-get update
           sudo apt-get install -y libsqlite3-dev
           gem install bundler
           bundle install --jobs 4 --retry 3
-          COVERAGE=true bundle exec rspec
-        env:
-          BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}
+          bundle exec rspec
 
       - name: Upload coverage
         env:
