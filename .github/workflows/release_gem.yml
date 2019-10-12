@@ -1,0 +1,38 @@
+name: Release a gem
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    name: Build + Publish
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@master
+
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          version: 2.6.x
+
+      - name: Get the gem name
+        run: |
+          gemname=$(ls *.gemspec | sed -n -e '1,1s/\.gemspec.*//p')
+          echo ::set-env name=GEMNAME::$gemname
+
+      - name: Publish to RubyGems
+        env:
+          GEM_HOST_API_KEY: ${{secrets.RUBYGEMS_AUTH_TOKEN}}
+        run: |
+          r=$(ruby ci/check_version.rb $GEMNAME; echo $?)
+          if [ $r = "0" ]; then
+            mkdir -p $HOME/.gem
+            touch $HOME/.gem/credentials
+            chmod 0600 $HOME/.gem/credentials
+            printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+            gem build $GEMNAME.gemspec
+            gem push $GEMNAME.gem
+          fi
