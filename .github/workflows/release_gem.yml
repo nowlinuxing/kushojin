@@ -18,21 +18,8 @@ jobs:
         with:
           version: 2.6.x
 
-      - name: Get the gem name
-        run: |
-          gemname=$(ls *.gemspec | sed -n -e '1,1s/\.gemspec.*//p')
-          echo ::set-env name=GEMNAME::$gemname
-
-      - name: Publish to RubyGems
+      - name: Create a tag and release to rubygems.org
+        uses: nowlinuxing/action-release-gem@v1
         env:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
           GEM_HOST_API_KEY: ${{secrets.RUBYGEMS_AUTH_TOKEN}}
-        run: |
-          r=$(ruby ci/check_version.rb $GEMNAME; echo $?)
-          if [ $r = "0" ]; then
-            mkdir -p $HOME/.gem
-            touch $HOME/.gem/credentials
-            chmod 0600 $HOME/.gem/credentials
-            printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-            gem build $GEMNAME.gemspec
-            gem push $GEMNAME.gem
-          fi
