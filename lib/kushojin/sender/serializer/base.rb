@@ -3,9 +3,7 @@ module Kushojin
     module Serializer
       class Base
         def self.default_ignore_columns
-          c = Class.new
-          c.extend(ActiveRecord::Timestamp::ClassMethods)
-          c.class_eval { timestamp_attributes_for_create + timestamp_attributes_for_update }
+          %w[created_at created_on updated_at updated_on]
         end
         private_class_method :default_ignore_columns
 
